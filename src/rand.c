@@ -3,4 +3,4 @@
 
 
 
-float randBm() {return rand_bm();}
+float randBm() { return rand_bm(); }

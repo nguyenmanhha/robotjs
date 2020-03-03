@@ -4,7 +4,7 @@
     'include_dirs': [
         "<!(node -e \"require('nan')\")"
     ],
-    
+
     'cflags': [
       '-Wall',
       '-Wparentheses',
@@ -12,7 +12,7 @@
       '-Wbad-function-cast',
       '-Wdisabled-optimization'
     ],
-    
+
     'conditions': [
       ['OS == "mac"', {
         'include_dirs': [
@@ -30,7 +30,7 @@
           ]
         }
       }],
-      
+
       ['OS == "linux"', {
         'link_settings': {
           'libraries': [
@@ -40,7 +40,7 @@
             '-lXtst'
           ]
         },
-        
+
         'sources': [
           'src/xdisplay.c'
         ]
@@ -50,10 +50,11 @@
         'defines': ['IS_WINDOWS']
       }]
     ],
-    
+
     'sources': [
       'src/robotjs.cc',
       'src/deadbeef_rand.c',
+      'src/rand.c',
       'src/mouse.c',
       'src/keypress.c',
       'src/keycode.c',

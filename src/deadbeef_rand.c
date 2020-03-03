@@ -29,6 +29,9 @@ uint32_t deadbeef_generate_seed(void)
 
 float rand_bm()
 {
+   // pre-init
+   deadbeef_srand(deadbeef_generate_seed());
+
    float u = 0, v = 0;
 
    while(u == 0) u = deadbeef_rand() / pow(2, 32);
