@@ -4,6 +4,7 @@
 #include <vector>
 #include "mouse.h"
 #include "deadbeef_rand.h"
+#include "rand.h"
 #include "keypress.h"
 #include "screen.h"
 #include "screengrab.h"
@@ -862,6 +863,14 @@ NAN_METHOD(getColor)
 
 }
 
+// UTILS
+NAN_METHOD(randBm)
+{
+	float randNum = randBm();
+
+	info.GetReturnValue().Set(randNum);
+}
+
 NAN_MODULE_INIT(InitAll)
 {
 	Nan::Set(target, Nan::New("dragMouse").ToLocalChecked(),
@@ -926,6 +935,9 @@ NAN_MODULE_INIT(InitAll)
 
 	Nan::Set(target, Nan::New("setXDisplayName").ToLocalChecked(),
 		Nan::GetFunction(Nan::New<FunctionTemplate>(setXDisplayName)).ToLocalChecked());
+
+   Nan::Set(target, Nan::New("randBm").ToLocalChecked(),
+		Nan::GetFunction(Nan::New<FunctionTemplate>(randBm)).ToLocalChecked());
 }
 
 NODE_MODULE(robotjs, InitAll)
