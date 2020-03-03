@@ -644,6 +644,29 @@ NAN_METHOD(typeStringDelayed)
 	}
 }
 
+NAN_METHOD(typeStringHuman)
+{
+	if (info.Length() > 0) {
+		char *str;
+		Nan::Utf8String string(info[0]);
+
+		str = *string;
+
+      size_t maxDelay = Nan::To<int32_t>(info[1]).FromJust();
+
+      double spreadFactor = 0.0;
+      if (info[2]->IsNumber()) {
+         spreadFactor = Nan::To<double>(info[2]).FromJust();
+      }
+
+		typeStringHuman(str, maxDelay, spreadFactor);
+
+		info.GetReturnValue().Set(Nan::New(1));
+	} else {
+		return Nan::ThrowError("Invalid number of arguments.");
+	}
+}
+
 NAN_METHOD(setKeyboardDelay)
 {
 	if (info.Length() != 1)
@@ -871,6 +894,34 @@ NAN_METHOD(randBm)
 	info.GetReturnValue().Set(randNum);
 }
 
+NAN_METHOD(randTimeBm)
+{
+   if (info.Length() != 2) {
+		return Nan::ThrowError("Invalid number of arguments.");
+	}
+
+	uint min = Nan::To<uint>(info[0]).FromJust();
+	uint max = Nan::To<uint>(info[1]).FromJust();
+
+	uint randNum = randTimeBm(min, max);
+
+	info.GetReturnValue().Set(randNum);
+}
+
+NAN_METHOD(randTimeSin)
+{
+   if (info.Length() != 2) {
+		return Nan::ThrowError("Invalid number of arguments.");
+	}
+
+	uint min = Nan::To<uint>(info[0]).FromJust();
+	uint max = Nan::To<uint>(info[1]).FromJust();
+
+	uint randNum = randTimeSin(min, max);
+
+	info.GetReturnValue().Set(randNum);
+}
+
 NAN_MODULE_INIT(InitAll)
 {
 	Nan::Set(target, Nan::New("dragMouse").ToLocalChecked(),
@@ -915,6 +966,9 @@ NAN_MODULE_INIT(InitAll)
 	Nan::Set(target, Nan::New("typeStringDelayed").ToLocalChecked(),
 		Nan::GetFunction(Nan::New<FunctionTemplate>(typeStringDelayed)).ToLocalChecked());
 
+	Nan::Set(target, Nan::New("typeStringHuman").ToLocalChecked(),
+		Nan::GetFunction(Nan::New<FunctionTemplate>(typeStringHuman)).ToLocalChecked());
+
 	Nan::Set(target, Nan::New("setKeyboardDelay").ToLocalChecked(),
 		Nan::GetFunction(Nan::New<FunctionTemplate>(setKeyboardDelay)).ToLocalChecked());
 
@@ -938,6 +992,10 @@ NAN_MODULE_INIT(InitAll)
 
    Nan::Set(target, Nan::New("randBm").ToLocalChecked(),
 		Nan::GetFunction(Nan::New<FunctionTemplate>(randBm)).ToLocalChecked());
+   Nan::Set(target, Nan::New("randTimeBm").ToLocalChecked(),
+		Nan::GetFunction(Nan::New<FunctionTemplate>(randTimeBm)).ToLocalChecked());
+   Nan::Set(target, Nan::New("randTimeSin").ToLocalChecked(),
+		Nan::GetFunction(Nan::New<FunctionTemplate>(randTimeSin)).ToLocalChecked());
 }
 
 NODE_MODULE(robotjs, InitAll)

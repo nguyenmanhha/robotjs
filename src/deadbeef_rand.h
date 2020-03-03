@@ -20,6 +20,7 @@ void deadbeef_srand(uint32_t x);
 /* Generates seed from the current time. */
 uint32_t deadbeef_generate_seed(void);
 
+float randm(void);
 float rand_bm(void);
 
 /* Seeds with the above function. */

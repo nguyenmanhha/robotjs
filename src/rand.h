@@ -13,8 +13,9 @@ extern "C"
 #endif
 
 
-// UTILS
 float randBm(void);
+unsigned int randTimeBm(unsigned int min, unsigned int max);
+unsigned int randTimeSin(unsigned int min, unsigned int max);
 
 
 #endif /* RAND_H */

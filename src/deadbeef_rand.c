@@ -27,15 +27,19 @@ uint32_t deadbeef_generate_seed(void)
 	  return (t << 24) ^ (c << 11) ^ t ^ (size_t) &c;
 }
 
+float randm() {
+   deadbeef_srand(deadbeef_generate_seed());
+
+   return deadbeef_rand() / pow(2, 32);
+}
+
 float rand_bm()
 {
    // pre-init
-   deadbeef_srand(deadbeef_generate_seed());
-
    float u = 0, v = 0;
 
-   while(u == 0) u = deadbeef_rand() / pow(2, 32);
-   while(v == 0) v = deadbeef_rand() / pow(2, 32);
+   while(u == 0) u = randm();
+   while(v == 0) v = randm();
 
    float num = sqrt(-2.0 * log(u)) * cos(2.0 * M_PI * v);
    num = num / 10.0 + 0.5; // Translate to 0 -> 1

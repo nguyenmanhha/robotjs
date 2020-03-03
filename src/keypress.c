@@ -1,8 +1,17 @@
+
+#include <stdlib.h>
+
 #include "keypress.h"
 #include "deadbeef_rand.h"
+#include "rand.h"
 #include "microsleep.h"
 
 #include <ctype.h> /* For isupper() */
+
+// These default value simulates most accurate a moderate human-typer
+#define DEFAULT_MIN_DELAY 50
+#define DEFAULT_MAX_DELAY 200
+#define DEFAULT_SPREAD_FACTOR 20
 
 #if defined(IS_MACOSX)
 	#include <ApplicationServices/ApplicationServices.h>
@@ -319,4 +328,36 @@ void typeStringDelayed(const char *str, const unsigned cpm)
 			microsleep(mspc + (DEADBEEF_UNIFORM(0.0, 62.5)));
 		}
 	}
+}
+
+void typeStringHuman(const char *str, unsigned int maxDelay, float spreadFactor) {
+   MMKeyFlags flags = MOD_NONE;
+   char c;
+
+   unsigned int usedDelay = DEFAULT_MAX_DELAY;
+   float usedSpreadFactor = DEFAULT_SPREAD_FACTOR;
+
+   if (spreadFactor > 0.0) {
+      usedSpreadFactor = spreadFactor;
+   }
+
+   // loop and press keys
+   while (*str != '\0') {
+      c = *str++;
+
+      if (maxDelay != 0.0) {
+         usedDelay = maxDelay;
+      }
+      else {
+         usedDelay = DEFAULT_MAX_DELAY;
+      }
+
+      if (randm() > 0.8) {
+         usedDelay = usedDelay * usedSpreadFactor;
+      }
+
+      microsleep(abs(randTimeSin(DEFAULT_MIN_DELAY, usedDelay) - usedDelay / 2));
+
+      tapKey(c, flags);
+   }
 }
